@@ -1,0 +1,9 @@
+grammar org.eclipsecon.expdsl.Expressions with org.eclipse.xtext.common.Terminals
+
+generate expressions "http://www.eclipsecon.org/expdsl/Expressions"
+
+Model:
+	greetings+=Greeting*;
+	
+Greeting:
+	'Hello' name=ID '!';
