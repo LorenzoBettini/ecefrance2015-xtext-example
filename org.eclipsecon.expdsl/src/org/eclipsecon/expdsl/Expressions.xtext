@@ -2,8 +2,20 @@ grammar org.eclipsecon.expdsl.Expressions with org.eclipse.xtext.common.Terminal
 
 generate expressions "http://www.eclipsecon.org/expdsl/Expressions"
 
-Model:
-	greetings+=Greeting*;
-	
-Greeting:
-	'Hello' name=ID '!';
+ExpressionsModel:
+	elements += AbstractElement*;
+
+AbstractElement:
+	Variable | Expression ;
+
+Variable:
+	declaredType=Type name=ID '=' expression=Expression;
+
+Type: {IntType} 'int' | {BoolType} 'bool';
+
+Expression: 
+	{IntConstant} value=INT |
+	{StringConstant} value=STRING |
+	{BoolConstant} value=('true'|'false') |
+	{VariableRef} variable=[Variable]
+;
