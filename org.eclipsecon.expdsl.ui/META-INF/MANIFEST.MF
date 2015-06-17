@@ -8,6 +8,18 @@ Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipsecon.expdsl;visibility:=reexport,
  org.eclipse.xtext.ui,
  org.eclipse.ui.editors;bundle-version="3.5.0",
- org.eclipse.ui.ide;bundle-version="3.5.0"
+ org.eclipse.ui.ide;bundle-version="3.5.0",
+ org.eclipse.xtext.ui.shared,
+ org.eclipse.ui,
+ org.eclipse.xtext.builder,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtext.common.types.ui,
+ org.eclipse.xtext.ui.codetemplates.ui,
+ org.eclipse.compare
 Import-Package: org.apache.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Export-Package: org.eclipsecon.expdsl.ui.quickfix,
+ org.eclipsecon.expdsl.ui.contentassist,
+ org.eclipsecon.expdsl.ui.internal,
+ org.eclipsecon.expdsl.ui.contentassist.antlr
+Bundle-Activator: org.eclipsecon.expdsl.ui.internal.ExpressionsActivator

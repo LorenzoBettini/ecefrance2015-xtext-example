@@ -6,6 +6,25 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-SymbolicName: org.eclipsecon.expdsl; singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.xtext;visibility:=reexport,
- org.eclipse.equinox.common;bundle-version="3.5.0"
+ org.eclipse.equinox.common;bundle-version="3.5.0",
+ org.eclipse.xtext.util,
+ org.eclipse.emf.ecore,
+ org.eclipse.emf.common,
+ org.eclipse.xtext.xbase.lib,
+ org.antlr.runtime,
+ org.eclipse.xtext.common.types,
+ org.objectweb.asm;bundle-version="[5.0.1,6.0.0)";resolution:=optional
 Import-Package: org.apache.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Export-Package: org.eclipsecon.expdsl,
+ org.eclipsecon.expdsl.services,
+ org.eclipsecon.expdsl.expressions,
+ org.eclipsecon.expdsl.expressions.impl,
+ org.eclipsecon.expdsl.expressions.util,
+ org.eclipsecon.expdsl.serializer,
+ org.eclipsecon.expdsl.parser.antlr,
+ org.eclipsecon.expdsl.parser.antlr.internal,
+ org.eclipsecon.expdsl.validation,
+ org.eclipsecon.expdsl.scoping,
+ org.eclipsecon.expdsl.generator,
+ org.eclipsecon.expdsl.formatting
