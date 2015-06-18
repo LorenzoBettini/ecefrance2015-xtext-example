@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.eclipsecon.expdsl</groupId>
+	<artifactId>org.eclipsecon.expdsl.parent</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<modules>
+		<module>../org.eclipsecon.expdsl.targetplatform</module>
+		<module>../org.eclipsecon.expdsl</module>
+		<module>../org.eclipsecon.expdsl.ui</module>
+		<module>../org.eclipsecon.expdsl.tests</module>
+		<module>../org.eclipsecon.expdsl.sdk</module>
+	</modules>
+
+	<properties>
+		<tycho-version>0.22.0</tycho-version>
+		<tycho-extras-version>0.22.0</tycho-extras-version>
+		<maven-surefire-plugin.version>2.17</maven-surefire-plugin.version>
+		<maven-antrun-plugin.version>1.7</maven-antrun-plugin.version>
+		<junit-version>4.11</junit-version>
+		<jacoco-version>0.7.4.201502262128</jacoco-version>
+		<findbugs-version>2.5.5</findbugs-version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<memoryArgs>-Xms256M -Xmx1024M -XX:PermSize=256M -XX:MaxPermSize=256M -XX:+HeapDumpOnOutOfMemoryError</memoryArgs>
+		<xtext.version>2.8.3</xtext.version>
+		<xtext-version>${xtext.version}</xtext-version>
+		<platform-version>[3.9,4.0)</platform-version>
+		<fornax-oaw-m2-plugin-version>3.5.1</fornax-oaw-m2-plugin-version>
+
+		<jacoco.reportPath>../target/jacoco.exec</jacoco.reportPath>
+		
+		<target-file-name>luna</target-file-name>
+	</properties>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<!-- xtend-maven-plugin is in pluginManagement instead of in plugins 
+					so that it doesn't run before the exec-maven-plugin's *.mwe2 gen; this way 
+					we can list it after. -->
+
+				<plugin>
+					<groupId>org.eclipse.xtend</groupId>
+					<artifactId>xtend-maven-plugin</artifactId>
+					<version>${xtext.version}</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>compile</goal>
+								<goal>xtend-install-debug-info</goal>
+								<goal>testCompile</goal>
+								<goal>xtend-test-install-debug-info</goal>
+							</goals>
+						</execution>
+					</executions>
+					<configuration>
+						<outputDirectory>xtend-gen</outputDirectory>
+					</configuration>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-clean-plugin</artifactId>
+					<version>2.5</version>
+					<configuration>
+						<filesets>
+							<fileset>
+								<directory>${basedir}/xtend-gen</directory>
+							</fileset>
+						</filesets>
+					</configuration>
+				</plugin>
+
+			</plugins>
+		</pluginManagement>
+
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-maven-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<extensions>true</extensions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-source-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<executions>
+					<execution>
+						<id>plugin-source</id>
+						<goals>
+							<goal>plugin-source</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.eclipse.tycho.extras</groupId>
+				<artifactId>tycho-source-feature-plugin</artifactId>
+				<version>${tycho-extras-version}</version>
+				<executions>
+					<execution>
+						<id>source-feature</id>
+						<phase>package</phase>
+						<goals>
+							<goal>source-feature</goal>
+						</goals>
+						<configuration>
+							<excludes>
+								<!-- These are bundles and feature that do not have a corresponding 
+									source version; NOT the ones that we do not want source versions -->
+								<feature id="org.eclipse.swtbot.ide" />
+								<feature id="org.eclipse.xtext.sdk" />
+								<feature id="org.eclipse.xtend.sdk" />
+								<feature id="org.eclipse.pde" />
+								<feature id="org.eclipse.emf.mwe2.language.sdk" />
+								<feature id="org.eclipse.emf.mwe2.runtime.sdk" />
+							</excludes>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-p2-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<executions>
+					<execution>
+						<id>attach-p2-metadata</id>
+						<phase>package</phase>
+						<goals>
+							<goal>p2-metadata</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<!-- in standard build, use only the current environment -->
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>target-platform-configuration</artifactId>
+				<version>${tycho-version}</version>
+				<configuration>
+					<target>
+						<artifact>
+							<groupId>org.eclipsecon.expdsl</groupId>
+							<artifactId>org.eclipsecon.expdsl.targetplatform</artifactId>
+							<version>${project.version}</version>
+							<classifier>${target-file-name}</classifier>
+						</artifact>
+					</target>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-packaging-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<configuration>
+					<format>'v'yyyyMMdd'-'HHmm</format>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>${jacoco-version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+						<configuration>
+							<!-- Where to put jacoco coverage report -->
+							<destFile>${jacoco.reportPath}</destFile>
+							<includes>
+								<include>org.eclipsecon.expdsl.*</include>
+							</includes>
+							<excludes>
+								<exclude>**/org/eclipse/**/*.class</exclude>
+								<exclude>**.antlr**</exclude>
+								<exclude>**.parseTree**</exclude>
+								<exclude>**Abstract*RuntimeModule.class</exclude>
+								<exclude>**/*SetupGenerated*.class</exclude>
+								<exclude>**/Abstract*Validator.class</exclude>
+								<exclude>**/*GrammarAccess*.class</exclude>
+								<exclude>**/Abstract*UiModule.class</exclude>
+								<exclude>**/Abstract*ProposalProvider.class</exclude>
+								<exclude>**/*Test.class</exclude>
+								<exclude>**/*Internal*</exclude>
+								<exclude>**/*Sequencer*</exclude>
+								<exclude>**/internal/*</exclude>
+								<exclude>**/org.eclipsecon.expdsl/javamm/util/*</exclude>
+								<exclude>**/org.eclipsecon.expdsl/javamm/impl/*</exclude>
+							</excludes>
+							<append>true</append>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
