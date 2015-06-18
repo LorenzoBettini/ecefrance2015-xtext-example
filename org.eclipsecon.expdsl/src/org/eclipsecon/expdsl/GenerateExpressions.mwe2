@@ -86,10 +86,10 @@ Workflow {
     		fragment = builder.BuilderIntegrationFragment auto-inject {}
     
     		// generator API
-    		fragment = generator.GeneratorFragment auto-inject {}
+    		//fragment = generator.GeneratorFragment auto-inject {}
     
     		// formatter API
-    		fragment = formatting.FormatterFragment auto-inject {}
+    		//fragment = formatting.FormatterFragment auto-inject {}
     
     		// labeling API
     		fragment = labeling.LabelProviderFragment auto-inject {}
