@@ -3,7 +3,12 @@
  */
 package org.eclipsecon.expdsl.validation
 
-//import org.eclipse.xtext.validation.Check
+import com.google.inject.Inject
+import org.eclipse.xtext.validation.Check
+import org.eclipsecon.expdsl.expressions.VariableRef
+import org.eclipsecon.expdsl.util.ExpressionsModelUtil
+
+import static org.eclipsecon.expdsl.expressions.ExpressionsPackage.Literals.*
 
 /**
  * This class contains custom validation rules. 
@@ -12,14 +17,19 @@ package org.eclipsecon.expdsl.validation
  */
 class ExpressionsValidator extends AbstractExpressionsValidator {
 
-//  public static val INVALID_NAME = 'invalidName'
-//
-//	@Check
-//	def checkGreetingStartsWithCapital(Greeting greeting) {
-//		if (!Character.isUpperCase(greeting.name.charAt(0))) {
-//			warning('Name should start with a capital', 
-//					MyDslPackage.Literals.GREETING__NAME,
-//					INVALID_NAME)
-//		}
-//	}
+	public static val FORWARD_REFERENCE = "org.eclipsecon.expdsl.ForwardReference";
+
+	@Inject extension ExpressionsModelUtil
+
+	@Check
+	def void checkForwardReference(VariableRef varRef) {
+		val variable = varRef.getVariable()
+		if (!varRef.variablesDefinedBefore.contains(variable)) {
+			error("variable forward reference not allowed: '"
+					+ variable.name + "'",
+				VARIABLE_REF__VARIABLE, // where to put the error marker
+				FORWARD_REFERENCE
+			)
+		}
+	}
 }
