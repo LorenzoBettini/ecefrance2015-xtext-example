@@ -1,0 +1,8 @@
+Path to class directories (e.g.: **/target/classDir, **/classes):
+org.eclipsecon.expdsl/**/classes,org.eclipsecon.expdsl.ui/**/classes
+
+Path to source directories (e.g.: **/mySourceFiles)
+org.eclipsecon.expdsl/src,org.eclipsecon.expdsl.ui/src,org.eclipsecon.expdsl/xtend-gen,org.eclipsecon.expdsl.ui/xtend-gen
+
+Exclusions (e.g.: **/*Test*.class)
+**/*ExtensionFactory*,**/*UiModule*,**/*RuntimeModule*,**/*StandaloneSetup*,**/*Internal*,**/*Sequencer*,**/*Abstract*,**/*GrammarAccess*,**/antlr/*.*,**/internal/*.*,**/expressions/util/*.*,**/expressions/impl/*.*
