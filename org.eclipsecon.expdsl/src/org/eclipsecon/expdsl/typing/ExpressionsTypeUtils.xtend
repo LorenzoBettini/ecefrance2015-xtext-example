@@ -8,7 +8,7 @@ class ExpressionsTypeUtils {
 
 	val static typeRepr = #{
 		INT_TYPE -> "int",
-		STRING_TYPE -> "string",
+		STRING_TYPE -> "String",
 		BOOL_TYPE -> "boolean"
 	}
 

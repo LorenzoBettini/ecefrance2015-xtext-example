@@ -102,15 +102,15 @@ class ExpressionsTypeProviderTest {
 
 	@Test def void initializationExpressionExpectedType() { 
 		"int i = 's'".assertVariableDeclarationExpectedTypes("int")
-		"string i = 1".assertVariableDeclarationExpectedTypes("string")
+		"string i = 1".assertVariableDeclarationExpectedTypes("String")
 		"bool i = 1".assertVariableDeclarationExpectedTypes("boolean")
 	}
 
 	@Test def void plusExpectsIntOrString() {
 		"1 + true".assertPlusExpectedTypes("int", "int")
 		"true + 1".assertPlusExpectedTypes("int", "int")
-		"'1' + true".assertPlusExpectedTypes("string", "string")
-		"true + '1'".assertPlusExpectedTypes("string", "string")
+		"'1' + true".assertPlusExpectedTypes("String", "String")
+		"true + '1'".assertPlusExpectedTypes("String", "String")
 	}
 
 	@Test def void testExpectedWithIncompleteModel() {
@@ -118,7 +118,7 @@ class ExpressionsTypeProviderTest {
 		// simply string since everything is assignable to string
 		"1 == ".assertExpectTheSameType("Unknown", null)
 		"true + ".assertPlusExpectedTypes("int", null)
-		"'s' + ".assertPlusExpectedTypes("string", null)
+		"'s' + ".assertPlusExpectedTypes("String", null)
 		"'s' <= ".assertComparisonExpectedTypes("Unknown", null)
 	}
 	

@@ -14,11 +14,11 @@ Variable:
 Expression: Or;
 
 Or returns Expression:
-	And ({Or.left=current} "||" right=And)*
+	And ({Or.left=current} op="||" right=And)*
 ;
 
 And returns Expression:
-	Equality ({And.left=current} "&&" right=Equality)*
+	Equality ({And.left=current} op="&&" right=Equality)*
 ;
 
 Equality returns Expression:
@@ -37,7 +37,7 @@ Comparison returns Expression:
 
 PlusOrMinus returns Expression:
 	MulOrDiv (
-		({Plus.left=current} '+' | {Minus.left=current} '-') 
+		({Plus.left=current} op='+' | {Minus.left=current} op='-') 
 		right=MulOrDiv
 	)*
 ;
@@ -51,7 +51,7 @@ MulOrDiv returns Expression:
 
 Primary returns Expression:
 	'(' Expression ')' |
-	{Not} "!" expression=Primary |
+	{Not} op="!" expression=Primary |
 	Atomic
 ;
 
@@ -67,4 +67,3 @@ Type:
 	{StringType} 'string' |
 	{BoolType} 'bool'
 ;
-

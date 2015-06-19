@@ -28,4 +28,5 @@ Export-Package: org.eclipsecon.expdsl,
  org.eclipsecon.expdsl.services,
  org.eclipsecon.expdsl.typing,
  org.eclipsecon.expdsl.util,
- org.eclipsecon.expdsl.validation
+ org.eclipsecon.expdsl.validation,
+ org.eclipsecon.expdsl.generator

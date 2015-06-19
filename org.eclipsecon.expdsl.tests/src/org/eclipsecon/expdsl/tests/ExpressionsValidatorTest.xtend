@@ -52,4 +52,16 @@ class ExpressionsValidatorTest {
 		]
 	}
 
+	@Test
+	def void testCorrectProgram() {
+		'''
+		int i = 0
+		int j = i + 1
+		bool b = i <= 0
+		b
+		string s = "this is b: " + b
+		b && (j < i)
+		"is A < b ? " + "A" < "b"
+		'''.parse.assertNoErrors
+	}
 }
