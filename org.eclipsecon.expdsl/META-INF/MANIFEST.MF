@@ -26,5 +26,6 @@ Export-Package: org.eclipsecon.expdsl,
  org.eclipsecon.expdsl.scoping,
  org.eclipsecon.expdsl.serializer,
  org.eclipsecon.expdsl.services,
+ org.eclipsecon.expdsl.typing,
  org.eclipsecon.expdsl.util,
  org.eclipsecon.expdsl.validation
