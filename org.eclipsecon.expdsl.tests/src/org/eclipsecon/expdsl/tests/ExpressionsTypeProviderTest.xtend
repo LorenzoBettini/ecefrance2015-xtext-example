@@ -18,6 +18,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 import static extension org.junit.Assert.*
+import org.eclipsecon.expdsl.expressions.ExpressionsFactory
 
 @RunWith(XtextRunner)
 @InjectWith(ExpressionsInjectorProvider)
@@ -26,6 +27,14 @@ class ExpressionsTypeProviderTest {
 	@Inject extension ParseHelper<ExpressionsModel>
 	@Inject extension ExpressionsTypeProvider
 	@Inject extension ExpressionsTypeUtils
+
+	@Test(expected=IllegalArgumentException)
+	def void inferredTypeWithNull() { null.inferredType }
+
+	@Test(expected=IllegalArgumentException)
+	def void expectedTypeWithNullContainer() {
+		ExpressionsFactory.eINSTANCE.createIntConstant.expectedType
+	}
 	
 	@Test def void intConstant() { "10".assertIntType }
 	@Test def void stringConstant() { "'foo'".assertStringType }
@@ -46,6 +55,7 @@ class ExpressionsTypeProviderTest {
 	
 	@Test def void minusExp() { "1 - 2".assertIntType }
 	
+	@Test def void plusIncomplete() { "1 + ".assertIntType }
 	@Test def void numericPlus() { "1 + 2".assertIntType }
 	@Test def void stringPlus() { "'a' + 'b'".assertStringType }
 	@Test def void numAndStringPlus() { "'a' + 2".assertStringType }

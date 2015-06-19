@@ -1,27 +1,21 @@
 package org.eclipsecon.expdsl.typing
 
+import java.util.Map
+import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EObject
 import org.eclipsecon.expdsl.expressions.AbstractElement
-import org.eclipsecon.expdsl.expressions.And
-import org.eclipsecon.expdsl.expressions.BoolConstant
 import org.eclipsecon.expdsl.expressions.BoolType
-import org.eclipsecon.expdsl.expressions.Comparison
-import org.eclipsecon.expdsl.expressions.Equality
 import org.eclipsecon.expdsl.expressions.Expression
 import org.eclipsecon.expdsl.expressions.ExpressionsFactory
 import org.eclipsecon.expdsl.expressions.ExpressionsModel
-import org.eclipsecon.expdsl.expressions.IntConstant
 import org.eclipsecon.expdsl.expressions.IntType
-import org.eclipsecon.expdsl.expressions.Minus
-import org.eclipsecon.expdsl.expressions.MulOrDiv
-import org.eclipsecon.expdsl.expressions.Not
-import org.eclipsecon.expdsl.expressions.Or
 import org.eclipsecon.expdsl.expressions.Plus
-import org.eclipsecon.expdsl.expressions.StringConstant
 import org.eclipsecon.expdsl.expressions.StringType
 import org.eclipsecon.expdsl.expressions.Type
 import org.eclipsecon.expdsl.expressions.Variable
 import org.eclipsecon.expdsl.expressions.VariableRef
+
+import static org.eclipsecon.expdsl.expressions.ExpressionsPackage.Literals.*
 
 class ExpressionsTypeProvider {
 	
@@ -30,23 +24,33 @@ class ExpressionsTypeProvider {
 	public static val intType = factory.createIntType
 	public static val boolType = factory.createBoolType
 
-	def dispatch Type inferredType(AbstractElement e) {
-		null
-	}
-	
-	def dispatch Type inferredType(Expression e) {
-		switch (e) {
-			StringConstant: stringType
-			IntConstant: intType
-			BoolConstant: boolType
-			Not: boolType
-			MulOrDiv: intType
-			Minus: intType
-			Comparison: boolType
-			Equality: boolType
-			And: boolType
-			Or: boolType
+	val Map<EClass, Type> knownTypes
+	val Map<EClass, Type> knownExpectedTypes
+
+	new() {
+		knownTypes = #{
+			STRING_CONSTANT -> stringType,
+			INT_CONSTANT -> intType,
+			BOOL_CONSTANT -> boolType,
+			NOT -> boolType,
+			MUL_OR_DIV -> intType,
+			MINUS -> intType,
+			COMPARISON -> boolType,
+			EQUALITY -> boolType,
+			AND -> boolType,
+			OR -> boolType
 		}
+		knownExpectedTypes = #{
+			NOT -> boolType,
+			MUL_OR_DIV -> intType,
+			MINUS -> intType,
+			AND -> boolType,
+			OR -> boolType
+		}
+	}
+
+	def dispatch Type inferredType(AbstractElement e) {
+		knownTypes.get(e.eClass)
 	}
 
 	def dispatch Type inferredType(Plus e) {
@@ -63,10 +67,7 @@ class ExpressionsTypeProvider {
 	}
 	
 	def dispatch Type inferredType(VariableRef varRef) {
-		if (varRef.variable.eIsProxy)
-			return null // we'll deal with that in the validator
-		else
-			return varRef.variable.inferredType
+		return varRef.variable.inferredType
 	}
 	
 	def isInt(Type type) { type instanceof IntType }
@@ -85,14 +86,11 @@ class ExpressionsTypeProvider {
 	}
 
 	def dispatch Type expectedType(EObject container, Expression exp) {
-		switch (container) {
-			Not: boolType
-			MulOrDiv: intType
-			Minus: intType
-			And: boolType
-			Or: boolType
-			Variable: container.declaredType // if it's null then no expectation
+		if (container instanceof Variable) {
+			return container.declaredType
 		}
+		
+		return knownExpectedTypes.get(container.eClass)
 	}
 
 	def dispatch Type expectedType(Plus container, Expression exp) {
