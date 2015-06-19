@@ -33,7 +33,7 @@ class ExpressionsProposalProvider extends AbstractExpressionsProposalProvider {
 
 		abstractElement.variablesDefinedBefore.forEach[
 			variable |
-			if (type === null || variable.inferredType.isAssignableTo(type))
+			if (variable.inferredType.isAssignableTo(type))
 				acceptor.accept(createCompletionProposal
 			    		(variable.name, 
 			    		variable.name + " - Variable", null, 
