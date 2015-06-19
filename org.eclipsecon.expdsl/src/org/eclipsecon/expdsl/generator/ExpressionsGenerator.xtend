@@ -40,7 +40,7 @@ class ExpressionsGenerator implements IGenerator {
 		resource.allContents.toIterable.filter(typeof(ExpressionsModel)).forEach[
 			val origFileName = resource.URI.lastSegment
 			val javaClassName = origFileName.substring(0, origFileName.lastIndexOf('.')).toFirstUpper
-			fsa.generateFile('''expressions.«javaClassName».java''', 
+			fsa.generateFile('''expressions/«javaClassName».java''', 
 				compileToJava(javaClassName)
 			)
 		]

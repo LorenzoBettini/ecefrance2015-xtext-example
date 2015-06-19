@@ -4,12 +4,12 @@
 <listEntry value="=org.eclipsecon.expdsl/xtend-gen"/>
 </listAttribute>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-<listEntry value="/org.eclipsecon.expdsl.tests"/>
+<listEntry value="/org.eclipsecon.expdsl.tests/xtend-gen/org/eclipsecon/expdsl/tests"/>
 </listAttribute>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
-<listEntry value="4"/>
+<listEntry value="2"/>
 </listAttribute>
-<stringAttribute key="org.eclipse.jdt.junit.CONTAINER" value="=org.eclipsecon.expdsl.tests"/>
+<stringAttribute key="org.eclipse.jdt.junit.CONTAINER" value="=org.eclipsecon.expdsl.tests/xtend-gen&lt;org.eclipsecon.expdsl.tests"/>
 <booleanAttribute key="org.eclipse.jdt.junit.KEEPRUNNING_ATTR" value="false"/>
 <stringAttribute key="org.eclipse.jdt.junit.TESTNAME" value=""/>
 <stringAttribute key="org.eclipse.jdt.junit.TEST_KIND" value="org.eclipse.jdt.junit.loader.junit4"/>

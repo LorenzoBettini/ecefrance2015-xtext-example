@@ -3,11 +3,41 @@
  */
 package org.eclipsecon.expdsl.ui.contentassist
 
-import org.eclipsecon.expdsl.ui.contentassist.AbstractExpressionsProposalProvider
+import com.google.inject.Inject
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.xtext.Assignment
+import org.eclipse.xtext.ui.editor.contentassist.ContentAssistContext
+import org.eclipse.xtext.ui.editor.contentassist.ICompletionProposalAcceptor
+import org.eclipsecon.expdsl.typing.ExpressionsTypeConformanceComputer
+import org.eclipsecon.expdsl.typing.ExpressionsTypeProvider
+import org.eclipsecon.expdsl.expressions.AbstractElement
+import org.eclipsecon.expdsl.util.ExpressionsModelUtil
 
 /**
  * See https://www.eclipse.org/Xtext/documentation/304_ide_concepts.html#content-assist
  * on how to customize the content assistant.
  */
 class ExpressionsProposalProvider extends AbstractExpressionsProposalProvider {
+
+	@Inject extension ExpressionsTypeProvider
+	@Inject extension ExpressionsTypeConformanceComputer
+	@Inject extension ExpressionsModelUtil
+	
+	override completeAtomic_Variable(EObject elem, Assignment assignment, 
+			ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		if (!(elem instanceof AbstractElement))
+			return; // no proposal
+		
+		val abstractElement = elem as AbstractElement
+		val type = abstractElement.inferredType()
+
+		abstractElement.variablesDefinedBefore.forEach[
+			variable |
+			if (type === null || variable.inferredType.isAssignableTo(type))
+				acceptor.accept(createCompletionProposal
+			    		(variable.name, 
+			    		variable.name + " - Variable", null, 
+			    		context));
+	    ]
+	}
 }

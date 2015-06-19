@@ -36,7 +36,24 @@
 								for jacoco agent -->
 							<argLine>${tycho.testArgLine} ${memoryArgs}</argLine>
 							<includes>
-								<include>**/tests/*Test.java</include>
+								<include>**/expdsl/tests/*Test.java</include>
+							</includes>
+						</configuration>
+						<goals>
+							<goal>test</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>TychoSurefirePluginUiTest</id>
+						<phase>integration-test</phase>
+						<configuration>
+							<skip>${swtbot.tests.only}</skip>
+							<useUIHarness>true</useUIHarness>
+							<useUIThread>true</useUIThread>
+							<!-- tycho.testArgLine repeated to re-use the configuration for argLine for jacoco agent -->
+							<argLine>${tycho.testArgLine} ${memoryArgs}</argLine>
+							<includes>
+								<include>**/expdsl/ui/tests/*Test.java</include>
 							</includes>
 						</configuration>
 						<goals>
@@ -46,6 +63,24 @@
 				</executions>
 			</plugin>
 
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>target-platform-configuration</artifactId>
+				<configuration>
+					<dependency-resolution>
+						<extraRequirements>
+							<!-- to get the org.eclipse.osgi.compatibility.state plugin iff 
+							the targeted Eclipse version (e.g., Luna) has it
+							(backwards compatible with kepler and previous versions) -->
+							<requirement>
+								<type>eclipse-feature</type>
+								<id>org.eclipse.rcp</id>
+								<versionRange>0.0.0</versionRange>
+							</requirement>
+						</extraRequirements>
+					</dependency-resolution>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 </project>
