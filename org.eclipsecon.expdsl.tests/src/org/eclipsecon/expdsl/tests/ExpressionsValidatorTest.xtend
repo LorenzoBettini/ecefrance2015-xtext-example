@@ -13,6 +13,7 @@ import org.junit.runner.RunWith
 
 import static extension org.junit.Assert.*
 import org.eclipsecon.expdsl.validation.ExpressionsValidator
+import org.eclipse.emf.ecore.EObject
 
 @RunWith(typeof(XtextRunner))
 @InjectWith(typeof(ExpressionsInjectorProvider))
@@ -64,4 +65,21 @@ class ExpressionsValidatorTest {
 		"is A < b ? " + "A" < "b"
 		'''.parse.assertNoErrors
 	}
+
+	@Test
+	def void testUnresolvedVariable() {
+		"foo + bar".parse.assertIssuesAsStrings(
+			'''
+			Couldn't resolve reference to Variable 'foo'.
+			Couldn't resolve reference to Variable 'bar'.
+			'''
+		)
+	}
+
+	def private assertIssuesAsStrings(EObject o, CharSequence expected) {
+		expected.toString.trim.assertEquals(
+			o.validate.map[message].
+			join(System.getProperty("line.separator")))
+	}
+	
 }

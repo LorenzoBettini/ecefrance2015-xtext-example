@@ -24,7 +24,8 @@ class ExpressionsValidator extends AbstractExpressionsValidator {
 	@Check
 	def void checkForwardReference(VariableRef varRef) {
 		val variable = varRef.getVariable()
-		if (!varRef.variablesDefinedBefore.contains(variable)) {
+		// skip unresolved variable references
+		if (!variable.eIsProxy && !varRef.variablesDefinedBefore.contains(variable)) {
 			error("variable forward reference not allowed: '"
 					+ variable.name + "'",
 				VARIABLE_REF__VARIABLE, // where to put the error marker
