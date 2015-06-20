@@ -4,26 +4,31 @@
 package org.eclipsecon.expdsl.ui.labeling
 
 import com.google.inject.Inject
+import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider
+import org.eclipse.xtext.ui.label.DefaultEObjectLabelProvider
+import org.eclipsecon.expdsl.expressions.Variable
+import org.eclipsecon.expdsl.typing.ExpressionsTypeUtils
+import org.eclipsecon.expdsl.expressions.Expression
 
 /**
  * Provides labels for EObjects.
  * 
  * See https://www.eclipse.org/Xtext/documentation/304_ide_concepts.html#label-provider
  */
-class ExpressionsLabelProvider extends org.eclipse.xtext.ui.label.DefaultEObjectLabelProvider {
+class ExpressionsLabelProvider extends DefaultEObjectLabelProvider {
+
+	@Inject extension ExpressionsTypeUtils
 
 	@Inject
-	new(org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider delegate) {
+	new(AdapterFactoryLabelProvider delegate) {
 		super(delegate);
 	}
 
-	// Labels and icons can be computed like this:
-	
-//	def text(Greeting ele) {
-//		'A greeting to ' + ele.name
-//	}
-//
-//	def image(Greeting ele) {
-//		'Greeting.gif'
-//	}
+	def text(Variable v) {
+		v.declaredType.stringRepresentation + " " + v.name
+	}
+
+	def text(Expression e) {
+		"expression"
+	}
 }

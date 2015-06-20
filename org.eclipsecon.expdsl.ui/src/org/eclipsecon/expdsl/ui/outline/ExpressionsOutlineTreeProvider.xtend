@@ -3,11 +3,18 @@
  */
 package org.eclipsecon.expdsl.ui.outline
 
+import org.eclipsecon.expdsl.expressions.Variable
+import org.eclipsecon.expdsl.expressions.Expression
+
 /**
  * Customization of the default outline structure.
  *
  * See https://www.eclipse.org/Xtext/documentation/304_ide_concepts.html#outline
  */
 class ExpressionsOutlineTreeProvider extends org.eclipse.xtext.ui.editor.outline.impl.DefaultOutlineTreeProvider {
-	
+
+	def _isLeaf(Variable v) { true }	
+
+	def _isLeaf(Expression e) { true }	
+
 }
