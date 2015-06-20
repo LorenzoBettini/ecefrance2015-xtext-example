@@ -53,13 +53,13 @@ class ExpressionsGenerator implements IGenerator {
 		@SuppressWarnings("all")
 		public class «javaClassName» {
 			public void eval() {
-				«model.elements.map[compileToJava].join("")»
+				«model.elements.map[compileElementToJava].join("")»
 			}
 		}
 		'''
 	}
 
-	def String compileToJava(AbstractElement e) {
+	def String compileElementToJava(AbstractElement e) {
 		if (e instanceof Variable) {
 			'''
 			«e.declaredType.javaRepresentation» «e.name» = «e.expression.compileToJava»;
@@ -71,37 +71,59 @@ class ExpressionsGenerator implements IGenerator {
 		}
 	}
 
-	def String compileToJava(Expression e) {
-		switch (e) {
-			IntConstant: e.value.toString
-			BoolConstant: e.value
-			StringConstant: '''"«e.value»"'''
-			// when you're here, you assume the program is valid
-			Not: "!(" + e.expression.compileToJava + ")"
-			MulOrDiv: {
-				'''(«e.left.compileToJava» «e.op» «e.right.compileToJava»)'''
-			}
-			Minus: '''(«e.left.compileToJava» «e.op» «e.right.compileToJava»)'''
-			Plus: '''(«e.left.compileToJava» «e.op» «e.right.compileToJava»)'''
-			Equality: {
-				if (e.left.inferredType.isString) {
-					'''(«e.left.compileToJava».equals(«e.right.compileToJava») «e.op» true)'''
-				} else {
-					'''(«e.left.compileToJava» «e.op» «e.right.compileToJava»)'''
-				}
-			}
-			And: '''(«e.left.compileToJava» «e.op» «e.right.compileToJava»)'''
-			Or: '''(«e.left.compileToJava» «e.op» «e.right.compileToJava»)'''
-			Comparison: {
-				if (e.left.inferredType.isString) {
-					'''(«e.left.compileToJava».compareTo(«e.right.compileToJava») «e.op» 0)'''
-				} else {
-					'''(«e.left.compileToJava» «e.op» «e.right.compileToJava»)'''
-				}
-			}
-			VariableRef: {
-				e.variable.name
-			}
+	def dispatch String compileToJava(IntConstant e) {
+		e.value.toString
+	}
+
+	def dispatch String compileToJava(BoolConstant e) {
+		e.value
+	}
+
+	def dispatch String compileToJava(StringConstant e) {
+		'''"«e.value»"'''
+	}
+
+	def dispatch String compileToJava(VariableRef e) {
+		e.variable.name
+	}
+
+	def dispatch String compileToJava(Not e) {
+		"!(" + e.expression.compileToJava + ")"
+	}
+
+	def dispatch String compileToJava(MulOrDiv e) {
+		'''(«e.left.compileToJava» «e.op» «e.right.compileToJava»)'''
+	}
+
+	def dispatch String compileToJava(Minus e) {
+		'''(«e.left.compileToJava» «e.op» «e.right.compileToJava»)'''
+	}
+
+	def dispatch String compileToJava(Plus e) {
+		'''(«e.left.compileToJava» «e.op» «e.right.compileToJava»)'''
+	}
+
+	def dispatch String compileToJava(And e) {
+		'''(«e.left.compileToJava» «e.op» «e.right.compileToJava»)'''
+	}
+
+	def dispatch String compileToJava(Or e) {
+		'''(«e.left.compileToJava» «e.op» «e.right.compileToJava»)'''
+	}
+
+	def dispatch String compileToJava(Equality e) {
+		if (e.left.inferredType.isString) {
+			'''(«e.left.compileToJava».equals(«e.right.compileToJava») «e.op» true)'''
+		} else {
+			'''(«e.left.compileToJava» «e.op» «e.right.compileToJava»)'''
+		}
+	}
+
+	def dispatch String compileToJava(Comparison e) {
+		if (e.left.inferredType.isString) {
+			'''(«e.left.compileToJava».compareTo(«e.right.compileToJava») «e.op» 0)'''
+		} else {
+			'''(«e.left.compileToJava» «e.op» «e.right.compileToJava»)'''
 		}
 	}
 
