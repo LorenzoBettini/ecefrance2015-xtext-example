@@ -62,7 +62,7 @@ class ExpressionsGenerator implements IGenerator {
 	def String compileToJava(AbstractElement e) {
 		if (e instanceof Variable) {
 			'''
-			«e.declaredType.representation» «e.name» = «e.expression.compileToJava»;
+			«e.declaredType.javaRepresentation» «e.name» = «e.expression.compileToJava»;
 			'''
 		} else {
 			'''

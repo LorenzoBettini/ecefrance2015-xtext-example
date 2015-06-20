@@ -123,15 +123,15 @@ class ExpressionsTypeProviderTest {
 	}
 	
 	@Test def void testIsInt() { 
-		(ExpressionsTypeProvider::intType).isInt.assertTrue
+		(ExpressionsTypeProvider.intType).isInt.assertTrue
 	}
 
 	@Test def void testIsString() { 
-		(ExpressionsTypeProvider::stringType).isString.assertTrue
+		(ExpressionsTypeProvider.stringType).isString.assertTrue
 	}
 
 	@Test def void testIsBool() { 
-		(ExpressionsTypeProvider::boolType).isBoolean.assertTrue
+		(ExpressionsTypeProvider.boolType).isBoolean.assertTrue
 	}
 	
 	def assertStringType(CharSequence input) {
@@ -161,7 +161,7 @@ class ExpressionsTypeProviderTest {
 		
 		expectation.toString.assertEquals
 			(rightMostExpression.
-				expectedType.representation)
+				expectedType.javaRepresentation)
 	}
 
 	def private assertVariableDeclarationExpectedTypes(CharSequence input, CharSequence expectation) {
@@ -169,43 +169,43 @@ class ExpressionsTypeProviderTest {
 		
 		expectation.toString.assertEquals
 			(variable.expression.
-				expectedType.representation)
+				expectedType.javaRepresentation)
 	}
 
 	def private assertExpectTheSameType(CharSequence input, CharSequence expectedLeft, CharSequence expectedRight) {
 		val equality = input.parse.elements.last as Equality
 		
 		expectedLeft.assertEquals(
-			equality.left.expectedType.representation)
+			equality.left.expectedType.javaRepresentation)
 		if (expectedRight === null)
 			equality.right.assertNull
 		else
 			expectedRight.assertEquals(
-				equality.right.expectedType.representation)
+				equality.right.expectedType.javaRepresentation)
 	}
 
 	def private assertPlusExpectedTypes(CharSequence input, CharSequence expectedLeft, CharSequence expectedRight) {
 		val plus = input.parse.elements.last as Plus
 		
 		expectedLeft.assertEquals(
-			plus.left.expectedType.representation)
+			plus.left.expectedType.javaRepresentation)
 		if (expectedRight === null)
 			plus.right.assertNull
 		else
 			expectedRight.assertEquals(
-				plus.right.expectedType.representation)
+				plus.right.expectedType.javaRepresentation)
 	}
 	
 	def private assertComparisonExpectedTypes(CharSequence input, CharSequence expectedLeft, CharSequence expectedRight) {
 		val comparison = input.parse.elements.last as Comparison
 		
 		expectedLeft.assertEquals(
-			comparison.left.expectedType.representation)
+			comparison.left.expectedType.javaRepresentation)
 		if (expectedRight === null)
 			comparison.right.assertNull
 		else
 			expectedRight.assertEquals(
-				comparison.right.expectedType.representation)
+				comparison.right.expectedType.javaRepresentation)
 	}
 	
 }
