@@ -47,7 +47,6 @@
 						<id>TychoSurefirePluginUiTest</id>
 						<phase>integration-test</phase>
 						<configuration>
-							<skip>${swtbot.tests.only}</skip>
 							<useUIHarness>true</useUIHarness>
 							<useUIThread>true</useUIThread>
 							<!-- tycho.testArgLine repeated to re-use the configuration for argLine for jacoco agent -->
