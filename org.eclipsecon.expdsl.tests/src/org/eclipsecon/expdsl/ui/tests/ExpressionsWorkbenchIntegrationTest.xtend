@@ -25,7 +25,7 @@ class ExpressionsWorkbenchIntegrationTest extends AbstractWorkbenchTest {
 	
 	def void checkProgram(String contents, int expectedErrors) {
 		createFile(TEST_PROJECT + "/src/test.expdsl", contents)
-		waitForAutoBuild();
+		waitForBuild();
 		val markers = root.findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE).
 			filter[
 				getAttribute(IMarker.SEVERITY, IMarker.SEVERITY_INFO) == IMarker.SEVERITY_ERROR
