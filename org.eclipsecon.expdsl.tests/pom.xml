@@ -13,6 +13,24 @@
 	<artifactId>org.eclipsecon.expdsl.tests</artifactId>
 	<packaging>eclipse-test-plugin</packaging>
 	
+	<properties>
+		<os-jvm-flags />
+	</properties>
+	
+	<profiles>
+		<profile>
+			<id>macosx-jvm-flags</id>
+			<activation>
+				<os>
+					<family>mac</family>
+				</os>
+			</activation>
+			<properties>
+				<os-jvm-flags>-XstartOnFirstThread</os-jvm-flags>
+			</properties>
+		</profile>
+	</profiles>
+	
 	<build>
 		<plugins>
 			<plugin>
@@ -50,7 +68,7 @@
 							<useUIHarness>true</useUIHarness>
 							<useUIThread>true</useUIThread>
 							<!-- tycho.testArgLine repeated to re-use the configuration for argLine for jacoco agent -->
-							<argLine>${tycho.testArgLine} ${memoryArgs}</argLine>
+							<argLine>${tycho.testArgLine} ${memoryArgs} ${os-jvm-flags}</argLine>
 							<includes>
 								<include>**/expdsl/ui/tests/*Test.java</include>
 							</includes>
