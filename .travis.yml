@@ -12,6 +12,8 @@ env: DISPLAY=:99.0
 
 install: true
 
+before_install: echo "MAVEN_OPTS='-Xmx2048m -XX:MaxPermSize=512m'" > ~/.mavenrc
+
 before_script:
  - sh -e /etc/init.d/xvfb start
  

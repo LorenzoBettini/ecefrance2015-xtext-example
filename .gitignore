@@ -4,7 +4,6 @@ bin/
 logs.zip
 *.orig
 xtend-gen/
-src-gen/
 target/
 *.java._trace
 *.smap
