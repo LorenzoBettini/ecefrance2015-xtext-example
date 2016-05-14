@@ -21,5 +21,6 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.eclipsecon.expdsl.ui.quickfix,
  org.eclipsecon.expdsl.ui.contentassist,
  org.eclipsecon.expdsl.ui.internal,
- org.eclipsecon.expdsl.ui.contentassist.antlr
+ org.eclipsecon.expdsl.ui.contentassist.antlr,
+ org.eclipsecon.expdsl.ui.contentassist.antlr.internal
 Bundle-Activator: org.eclipsecon.expdsl.ui.internal.ExpressionsActivator
